@@ -1,0 +1,13 @@
+require('./Attendance');
+require('./Batch');
+require('./BatchYear');
+require('./Class');
+require('./Confession');
+require('./HomeVisit');
+require('./Mass');
+require('./Points');
+require('./PointType');
+require('./Servant');
+require('./Student');
+require('./StudentYearSummary');
+require('./Year');
