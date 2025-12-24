@@ -36,7 +36,7 @@ async function changePassword(req, res, next) {
 async function resetPassword(req, res, next) {
   try {
     const { newPassword } = req.body;
-    await authService.resetPassword(req.servant, newPassword);
+    await authService.resetPassword(req.params.id, newPassword);
     return successResponse(res, { message: SUCCESS_MESSAGES.AUTH.PASSWORD_RESET_SUCCESS });
   } catch (err) {
     next(err);

@@ -54,7 +54,11 @@ async function changePassword(servant, currPassword, newPassword) {
   await servant.save();
 }
 
-async function resetPassword(servant, newPassword) {
+async function resetPassword(servantId, newPassword) {
+  const servant = await Servant.findById(servantId);
+  if (!servant) {
+    throw new AppError(ERROR_MESSAGES.SERVANT.NOT_FOUND, 404);
+  }
   await servant.setPassword(newPassword);
   await servant.save();
 }

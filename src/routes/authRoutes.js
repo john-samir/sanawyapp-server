@@ -9,6 +9,6 @@ const { loginSchema, changePasswordSchema, resetPasswordSchema } = require('../v
 router.post('/login', validateMiddleware(loginSchema), authController.login);
 router.post('/logout', authenticate, authController.logout);
 router.post('/change-password', authenticate, validateMiddleware(changePasswordSchema), authController.changePassword);
-router.post('/reset-password', authenticate, requireAdmin, validateMiddleware(resetPasswordSchema), authController.resetPassword);
+router.post('/reset-password/:id', authenticate, requireAdmin, validateMiddleware(resetPasswordSchema), authController.resetPassword);
 
 module.exports = router;
