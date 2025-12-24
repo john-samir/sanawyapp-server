@@ -54,9 +54,15 @@ async function changePassword(servant, currPassword, newPassword) {
   await servant.save();
 }
 
+async function resetPassword(servant, newPassword) {
+  await servant.setPassword(newPassword);
+  await servant.save();
+}
+
 
 module.exports = {
   loginServant,
   logoutServant,
   changePassword,
+  resetPassword,
 };

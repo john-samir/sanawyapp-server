@@ -119,7 +119,8 @@ const ERROR_MESSAGES = {
 const SUCCESS_MESSAGES = {
     AUTH: {
         LOGOUT_SUCCESS: "Logged out successfully",
-        PASSWORD_CHANGE_SUCCESS: "Password updated successfully"
+        PASSWORD_CHANGE_SUCCESS: "Password updated successfully",
+        PASSWORD_RESET_SUCCESS: "Password reset successfully"
     }
 }
 // ==========================================================
