@@ -5,7 +5,7 @@ const POINT_TYPE = 'name value';
 const CLASS = 'name';
 const SERVANT = 'name';
 const BATCH = 'name currYear';
-const BATCH_YEAR = 'batch year academicYear';
+const BATCH_YEAR = 'batch year academicYear totalAttendanceCount maxNoOfConfessions';
 
 // Attendance PointTypes Configuration
 const ATTENDANCE_DEFAULT_POINT_TYPE_ID = "691ee3cc300cfb7450489894"; // Attendance Lvl4
