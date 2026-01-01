@@ -5,7 +5,8 @@ const studentYearSummarySchema = new mongoose.Schema({
     totalAttendance: { type: Number, default: 0 },
     totalConfessions: { type: Number, default: 0 },
     totalMass: { type: Number, default: 0 },
-    totalPoints: { type: Number, default: 0 }
+    totalPoints: { type: Number, default: 0 },
+    totalHomeVisits: { type: Number, default: 0 },
 },
     { timestamps: true }
 );

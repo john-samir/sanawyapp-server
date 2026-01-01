@@ -3,6 +3,7 @@ const studentService = require('../services/studentService');
 const classService = require('../services/classService');
 const batchYearService = require('../services/batchYearService');
 const servantService = require('../services/servantService');
+let studentYearSummaryService = null;
 
 const AppError = require('../utils/AppError');
 
@@ -58,7 +59,18 @@ async function createHomeVisit(data) {
         throw new AppError(ERROR_MESSAGES.HOME_VISIT.FAILED_CREATE, 404);
     }
 
-    // 5. Populate and return HomeVisit record
+
+    // 5. Update StudentYearSummary total home visit count
+    const updatedSummary = await updateStudentYearSummaryHomeVisitCount(
+        studentData._id,
+        batchYear._id
+    );
+
+    if(!updatedSummary) {
+        throw new AppError(ERROR_MESSAGES.STUDENT_YEAR_SUMMARY.FAILED_UPDATE, 500);
+    }
+
+    // 6. Populate and return HomeVisit record
     await homeVisitData.populate([
         { path: 'student', select: STUDENT },
         { path: 'class', select: CLASS },
@@ -184,6 +196,16 @@ async function deleteHomeVisit(id) {
 
     if (!deleted) return null;
 
+    // Update StudentYearSummary total home visit count
+    const updatedSummary = await updateStudentYearSummaryHomeVisitCount(
+        deleted.student,
+        deleted.batchYear
+    );
+
+    if(!updatedSummary) {
+        throw new AppError(ERROR_MESSAGES.STUDENT_YEAR_SUMMARY.FAILED_UPDATE, 500);
+    }
+
     return deleted;
 }
 
@@ -201,4 +223,51 @@ module.exports = {
 async function deleteAllHomeVisitsByStudentId(id) {
     const deleted = await HomeVisit.deleteMany({ student: id });
     return deleted;
+}
+
+
+async function countHomeVisits(studentId, batchYearId = null) {
+    const filter = { student: studentId };
+
+    if (batchYearId) {
+        filter.batchYear = batchYearId;
+    }
+
+    return await HomeVisit.countDocuments(filter);
+}
+
+/// Update StudentYearSummary total home visit count
+async function updateStudentYearSummaryHomeVisitCount(studentId, batchYearId) {
+    const homeVisitCount = await countHomeVisits(studentId, batchYearId);
+    studentYearSummaryService = require('../services/studentYearSummaryService');
+
+    // get StudentYearSummary
+    const summaries = await studentYearSummaryService.getStudentYearSummaries({
+        studentid: studentId,
+        batchyearid: batchYearId
+    });
+
+    let summary;
+
+    if (summaries.length === 0) {
+        // Create summary
+        summary = await studentYearSummaryService.createStudentYearSummary({
+            student: studentId,
+            batchYear: batchYearId,
+            totalHomeVisits: homeVisitCount
+        });
+
+    } else {
+        // Update summary
+        const existingSummary = summaries[0];
+
+        summary = await studentYearSummaryService.updateStudentYearSummary(
+            existingSummary._id,
+            {
+                totalHomeVisits: homeVisitCount
+            }
+        );
+    }
+
+    return summary;
 }

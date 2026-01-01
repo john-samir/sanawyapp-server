@@ -59,6 +59,7 @@ const ERROR_MESSAGES = {
 
     STUDENT_YEAR_SUMMARY: {
         NOT_FOUND: "Student Year Summary not found.",
+        FAILED_UPDATE: "Failed to update Student Year Summary.",
     },
 
     SERVANT: {
